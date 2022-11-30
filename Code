@@ -2,7 +2,7 @@ import random
 
 def attend_le_joueur():
     '''()->None
-    Pause le programme jusqu'au l'usager appui Enter
+    Pause the program until the user presses Enter
     '''
     try:
          input("Appuyez Enter pour continuer. ")
@@ -12,8 +12,8 @@ def attend_le_joueur():
 
 def prepare_paquet():
     '''()->list of str
-        Retourne une liste des chaines de caractères qui représente tous les cartes,
-        sauf le valet noir.
+        Returns a list of strings representing all cards,
+        except the black jack.
     '''
     paquet=[]
     couleurs = ['\u2660', '\u2661', '\u2662', '\u2663']
@@ -21,29 +21,33 @@ def prepare_paquet():
     for val in valeurs:
         for couleur in couleurs:
             paquet.append(val+couleur)
-    paquet.remove('J\u2663') # élimine le valet noir (le valet de trèfle)
+    paquet.remove('J\u2663') # eliminates the black jack (the jack of clubs)
     return paquet
 
 def melange_paquet(p):
     '''(list of str)->None
-       Melange la liste des chaines des caractères qui représente le paquet des cartes    
+       Shuffles the list of character strings representing the deck of cards  
     '''
     random.shuffle(p)
 
 def donne_cartes(p):
      '''(list of str)-> tuple of (list of str,list of str)
 
-     Retournes deux listes qui représentent les deux mains des cartes.  
-     Le donneur donne une carte à l'autre joueur, une à lui-même,
-     et ça continue jusqu'à la fin du paquet p.
+     Return two lists that represent the two hands of the cards.
+     The dealer gives one card to the other player, one to himself,
+     and it continues until the end of packet p.
      '''
      
      donneur=[]
      autre=[]
-
-
-     # COMPLETEZ CETTE FONCTION EN CONFORMITE AVEC LA DESCRIPTION CI-DESSUS
-     # AJOUTEZ VOTRE CODE ICI
+     i=0
+     while i in range (len(p)) :
+        if i %2 ==0 :
+            autre.append(p[i])
+        else:
+            donneur.append(p[i])
+        i+=1
+   
 
      
      return (donneur, autre)
@@ -53,11 +57,11 @@ def elimine_paires(l):
     '''
      (list of str)->list of str
 
-     Retourne une copy de la liste l avec tous les paires éliminées 
-     et mélange les éléments qui restent.
+     Returns a copy of list l with all pairs eliminated
+     and mix the remaining elements.
 
      Test:
-     (Notez que l’ordre des éléments dans le résultat pourrait être différent)
+     (Note that the order of the elements in the result could be different)
      
      >>> elimine_paires(['9♠', '5♠', 'K♢', 'A♣', 'K♣', 'K♡', '2♠', 'Q♠', 'K♠', 'Q♢', 'J♠', 'A♡', '4♣', '5♣', '7♡', 'A♠', '10♣', 'Q♡', '8♡', '9♢', '10♢', 'J♡', '10♡', 'J♣', '3♡'])
      ['10♣', '2♠', '3♡', '4♣', '7♡', '8♡', 'A♣', 'J♣', 'Q♢']
@@ -65,27 +69,39 @@ def elimine_paires(l):
      ['2♣', '5♢', '6♣', '9♣', 'A♢']
     '''
 
+    def num(ch):
+        n=ch[:len(ch)-1]
+        return(n)
+
+    for i in range(len(l)-1) :
+        if (l[i]) =='' :
+            continue
+        a=num(l[i])
+        for j in range(i+1,len(l)) : 
+            if (l[i]) =='' :
+                break
+            b=num(l[j])
+            if a==b  :
+                l[j]=''
+                l[i]=''   
+ 
     resultat=[]
-
-
-    # COMPLETEZ CETTE FONCTION EN CONFORMITE AVEC LA DESCRIPTION CI-DESSUS
-    # AJOUTEZ VOTRE CODE ICI
-     
-    
-
-    random.shuffle(resultat)
+    for i in l:
+        if i != '' :
+            resultat.append(i) 
+    melange_paquet(resultat)
     return resultat
 
 
 def affiche_cartes(p):
     '''
     (list)-None
-    Affiche les éléments de la liste p séparées par d'espaces
+    Displays the elements of the list p separated by spaces
     '''
+    ch = ' '.join(p)
+    print(ch)
 
-
-    # COMPLETEZ CETTE FONCTION EN CONFORMITE AVEC LA DESCRIPTION CI-DESSUS
-    # AJOUTEZ VOTRE CODE ICI
+   
 
     
 
@@ -97,14 +113,65 @@ def entrez_position_valide(n):
      
      Précondition: n>=1
      '''
-
-
+     i=-1
+     while (i <1 or i>n) :
+        print('SVP entrez un entier de 1 à ',n,' : ',end="")
+        i=int(input())
+     return(i)
+     # COMPLETEZ CETTE FONCTION EN CONFORMITE AVEC LA DESCRIPTION CI-DESSUS
+     # AJOUTEZ VOTRE CODE ICI
      
+
+#tour humain
+def demande_choix(donneur,humain):
+    "list,list-->none"
+    n=len(donneur)
+    print("J'ai ",n," cartes. Si 1 est la position de ma première carte et ",n," la position de ma dernière carte, laquelle de mes cartes voulez-vous?")
+    n=entrez_position_valide(len(donneur))
+    print("Vous avez demandé ma ",n,"ème carte.")
+    print("la voilà. C'est un ",donneur[n-1])
+    print("Avec ",donneur[n-1]," ajouté, votre main est: ")
+    
+    humain.append(donneur[n-1])
+    donneur.pop(n-1)
+    affiche_cartes(humain)
+
+
+def tour_humain(humain,donneur):
+    print("Votre tour.")
+    print("Votre main est:")
+    affiche_cartes(humain)
+    demande_choix(donneur,humain)
+    print("Après avoir défaussé toutes les paires et mélangé les cartes, votre main est:")
+    humain=elimine_paires(humain)
+    affiche_cartes(humain)
+    
+    attend_le_joueur() 
+    return(humain,donneur)
+ 
+#fin tour humain 
+#tour donneur(ordinateur)
+def tour_donneur(donneur,humain):
+    print("Mon tour")
+    n=random.randrange(len(humain))
+    print("J'ai pris votre ",n+1,"ème carte.")
+    donneur.append(humain[n])
+    humain.pop(n)
+    
+    donneur=elimine_paires(donneur)
+    attend_le_joueur()
+    return (donneur,humain)
+#fin tour donneur
+#test de fin du jeu
+def test(l):
+    t= (len(l) ==0) 
+    return(t)
+   
 
 def joue():
      '''()->None
      Cette fonction joue le jeu'''
-    
+     #partie1
      p=prepare_paquet()
      melange_paquet(p)
      tmp=donne_cartes(p)
@@ -112,20 +179,43 @@ def joue():
      humain=tmp[1]
 
      print("Bonjour. Je m'appelle Robot et je distribue les cartes.")
-     print("Votre main est:")
+     print("Votre main de cartes est:")
      affiche_cartes(humain)
      print("Ne vous inquiétez pas, je ne peux pas voir vos cartes ni leur ordre.")
      print("Maintenant défaussez toutes les paires de votre main. Je vais le faire moi aussi.")
+     
+     humain=elimine_paires(humain)
+     donneur=elimine_paires(donneur)
      attend_le_joueur()
      
-     donneur=elimine_paires(donneur)
-     humain=elimine_paires(humain)
+     #partie 2(qui se répete)
+     i=0
+     t=False
+     while (t==False):
+        while(i==0) and (t==False):
+            humain,donneur=tour_humain(humain,donneur)
+            t=(test(humain) or test(donneur))
+            if t == True :
+
+                print("J'ai terminé toutes les cartes.")
+                print("Félicitations! Vous, Humain, vous avez gagné")
+            i=1
+        while(i==1) and (t==False):
+            donneur,humain=tour_donneur(donneur,humain)
+            t=(test(humain) or test(donneur))
+            if t == True :
+                print("J'ai terminé toutes les cartes.")
+                print("Vous avez perdu! Moi, Robot, j'ai gagné.")
+            i=0           
+       
+     
+     
 
      # COMPLETEZ CETTE FONCTION EN CONFORMITE AVEC LA DESCRIPTION CI-DESSUS
      # AJOUTEZ VOTRE CODE ICI
     
-
-	 
+ 
 # programme principale
 joue()
+
 
