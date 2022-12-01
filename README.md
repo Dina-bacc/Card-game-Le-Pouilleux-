@@ -1,4 +1,4 @@
-# Play "le Pouilleux" 
+# "le Pouilleux" Card Game
 
 -le Pouilleux is a card game which requires 51 cards, the standard 52-card pack minus the jack of clubs. <br />
 -The computer is the card dealer.<br />
@@ -15,6 +15,11 @@ Humain vs Computer
 ## You want to read more about the game?
  - [Good to read](https://en.wikipedia.org/wiki/Vieux_gar%C3%A7on)
  
+## 🚀 About Me
+I am a Software student in UOttawa Co-op Program  <br/>
+Love coding <br/>
+Looking for a summer intern <br/>
+Python, Html , Css, Java Script
 
 ## 🔗 Links
 [![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/dina-baccar/)
