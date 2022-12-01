@@ -118,8 +118,6 @@ def entrez_position_valide(n):
         print('SVP entrez un entier de 1 à ',n,' : ',end="")
         i=int(input())
      return(i)
-     # COMPLETEZ CETTE FONCTION EN CONFORMITE AVEC LA DESCRIPTION CI-DESSUS
-     # AJOUTEZ VOTRE CODE ICI
      
 
 #tour humain
@@ -210,9 +208,6 @@ def joue():
        
      
      
-
-     # COMPLETEZ CETTE FONCTION EN CONFORMITE AVEC LA DESCRIPTION CI-DESSUS
-     # AJOUTEZ VOTRE CODE ICI
     
  
 # programme principale
