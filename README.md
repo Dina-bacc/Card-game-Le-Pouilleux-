@@ -12,7 +12,7 @@
 ## Players 
 Humain vs Computer
 
-## You want to read more about the game?
+## Want to know more about the game?
  - [Good to read](https://en.wikipedia.org/wiki/Vieux_gar%C3%A7on)
  
 ## 🚀 About Me
